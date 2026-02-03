@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:manage_states/hello_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -26,7 +25,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  TextEditingController nameController = TextEditingController();
+  RangeValues range = RangeValues(0, 1);
 
   @override
   Widget build(BuildContext context) {
@@ -36,33 +35,17 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text("Flutter Constraint Box"),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          spacing: 4,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: TextField(
-                controller: nameController,
-                decoration: InputDecoration(labelText: "Enter your name"),
-              ),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                if (nameController.text.toString().isNotEmpty) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (builder) =>
-                          HelloScreen(name: nameController.text.toString()),
-                    ),
-                  );
-                }
-              },
-              child: Text("Next"),
-            ),
-          ],
+        child: RangeSlider(
+          divisions: 10,
+          values: range,
+          min: 0,
+          max: 100,
+          onChanged: (change) {
+            setState(() {
+              range = change;
+            });
+            print(change);
+          },
         ),
       ),
     );
