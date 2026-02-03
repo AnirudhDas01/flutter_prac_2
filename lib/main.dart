@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:manage_states/intro_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,7 +13,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.deepPurple)),
-      home: const MyHomePage(),
+      home: IntoPage(),
     );
   }
 }
@@ -32,20 +33,19 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text("Flutter Constraint Box"),
       ),
-      body: ConstrainedBox(
-        constraints: BoxConstraints(minWidth: 100, maxHeight: double.infinity),
-        child: Container(
-          decoration: BoxDecoration(color: Colors.blueGrey),
-          child: Row(
-            spacing: 5,
-            children: [
-              Text("Hello world", style: TextStyle(color: Colors.white)),
-              Text("Hello world", style: TextStyle(color: Colors.white)),
-              Text("Hello world", style: TextStyle(color: Colors.white)),
-              Text("Hello world", style: TextStyle(color: Colors.white)),
-            ],
+      body: Column(
+        children: [
+          Text("Screen 1"),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (builder) => IntoPage()),
+              );
+            },
+            child: Text("Change"),
           ),
-        ),
+        ],
       ),
     );
   }
