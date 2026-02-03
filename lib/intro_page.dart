@@ -16,9 +16,9 @@ class IntoPage extends StatelessWidget {
           Text("Screen 2"),
           ElevatedButton(
             onPressed: () {
-              Navigator.push(
+              Navigator.pop(
                 context,
-                MaterialPageRoute(builder: (builder) => MyHomePage()),
+                MaterialPageRoute(builder: (builder) => IntoPage()),
               );
             },
             child: Text("Change"),
