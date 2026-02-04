@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   runApp(const MyApp());
@@ -27,56 +28,56 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<MaterialAccentColor> colors = [
-    Colors.redAccent,
-    Colors.pinkAccent,
-    Colors.purpleAccent,
-    Colors.deepPurpleAccent,
-    Colors.indigoAccent,
-    Colors.blueAccent,
-    Colors.lightBlueAccent,
-    Colors.cyanAccent,
-    Colors.tealAccent,
-    Colors.lightGreenAccent,
-    Colors.limeAccent,
-    Colors.yellowAccent,
-    Colors.amberAccent,
-    Colors.orangeAccent,
-    Colors.deepOrangeAccent,
-  ];
+  var nameController = TextEditingController();
+  // ignore: constant_identifier_names
+  static const String NAME_KEY = 'name';
+  String fetchedVal = "No Name Saved";
+  @override
+  void initState() {
+    getValue();
+    super.initState();
+  }
+
+  void getValue() async {
+    var pref = await SharedPreferences.getInstance();
+
+    var val = pref.getString(NAME_KEY);
+    if (val!.isNotEmpty) {
+      setState(() {
+        fetchedVal = val;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text("Flutter 3D List"),
+        title: Text("Shared Preference"),
       ),
-      body: SizedBox(
-        height: double.infinity,
-        child: Padding(
-          padding: const EdgeInsets.all(21.0),
-          child: ListWheelScrollView(
-            itemExtent: 100,
-            children: colors
-                .map(
-                  (color) => Container(
-                    height: 25,
-                    decoration: BoxDecoration(color: color),
-                    child: Center(
-                      child: Text(
-                        "Hello",
-                        style: TextStyle(
-                          fontSize: 21,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ),
-                )
-                .toList(),
-          ),
+      body: Padding(
+        padding: const EdgeInsets.all(25.0),
+
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          spacing: 10,
+          children: [
+            TextField(controller: nameController),
+            ElevatedButton(
+              onPressed: () async {
+                var pref = await SharedPreferences.getInstance();
+                if (nameController.text.toString().isNotEmpty) {
+                  pref.setString(NAME_KEY, nameController.text.toString());
+                  setState(() {
+                    fetchedVal = nameController.text.toString();
+                  });
+                }
+              },
+              child: Text("Save"),
+            ),
+            Text(fetchedVal),
+          ],
         ),
       ),
     );
