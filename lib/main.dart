@@ -56,30 +56,7 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text("Shared Preference"),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(25.0),
-
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          spacing: 10,
-          children: [
-            TextField(controller: nameController),
-            ElevatedButton(
-              onPressed: () async {
-                var pref = await SharedPreferences.getInstance();
-                if (nameController.text.toString().isNotEmpty) {
-                  pref.setString(NAME_KEY, nameController.text.toString());
-                  setState(() {
-                    fetchedVal = nameController.text.toString();
-                  });
-                }
-              },
-              child: Text("Save"),
-            ),
-            Text(fetchedVal),
-          ],
-        ),
-      ),
+      body:  Placeholder(),
     );
   }
 }
