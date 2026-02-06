@@ -33,14 +33,30 @@ class ThePage extends StatelessWidget {
                       return ListTile(
                         title: Text(data[index]['name'].toString()),
                         subtitle: Text(data[index]['contact'].toString()),
-                        trailing: Container(
-                          height: 20,
-                          width: 20,
-                          decoration: BoxDecoration(
-                            color: data[index]['is_read']
-                                ? Colors.greenAccent
-                                : Colors.white,
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                        trailing: SizedBox(
+                          width: 100,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              IconButton(
+                                onPressed: () {
+                                  context.read<ListMapProvider>().updateData({
+                                    "name": "Anirudh",
+                                    "contact": 11671661121,
+                                    "is_read": false,
+                                  }, index);
+                                },
+                                icon: Icon(Icons.edit),
+                              ),
+                              IconButton(
+                                onPressed: () {
+                                  context.read<ListMapProvider>().deleteData(
+                                    index,
+                                  );
+                                },
+                                icon: Icon(Icons.delete),
+                              ),
+                            ],
                           ),
                         ),
                       );

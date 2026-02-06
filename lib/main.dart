@@ -5,7 +5,15 @@ import 'package:manage_states/map_screens.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => ListMapProvider()),
+        ChangeNotifierProvider(create: (context) => CounterProvider()),
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -18,23 +26,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: MultiProvider(
-        providers: [
-          ChangeNotifierProvider(create: (context) => ListMapProvider()),
-          ChangeNotifierProvider(create: (context) => CounterProvider()),
-        ],
-        child: ListMapScreen(),
-      ),
+      home: ListMapScreen(),
     );
   }
 }
-
-// class MyHomePage extends StatefulWidget {
-//   const MyHomePage({super.key});
-
-//   @override
-//   State<MyHomePage> createState() => _MyHomePageState();
-// }
 
 class MyHomePage extends StatelessWidget {
   const MyHomePage({super.key});
@@ -82,12 +77,3 @@ class MyHomePage extends StatelessWidget {
     );
   }
 }
-
-// class _MyHomePageState extends State<MyHomePage> {
-//   int _counter = 0;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return ;
-//   }
-// }
