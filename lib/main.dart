@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:manage_states/counter_provider.dart';
+import 'package:manage_states/list_map_provider.dart';
+import 'package:manage_states/map_screens.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,48 +18,76 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: MyHomePage(),
+      home: MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (context) => ListMapProvider()),
+          ChangeNotifierProvider(create: (context) => CounterProvider()),
+        ],
+        child: ListMapScreen(),
+      ),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
+// class MyHomePage extends StatefulWidget {
+//   const MyHomePage({super.key});
+
+//   @override
+//   State<MyHomePage> createState() => _MyHomePageState();
+// }
+
+class MyHomePage extends StatelessWidget {
   const MyHomePage({super.key});
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  var nameController = TextEditingController();
-  // ignore: constant_identifier_names
-  static const String NAME_KEY = 'name';
-  String fetchedVal = "No Name Saved";
-  @override
-  void initState() {
-    getValue();
-    super.initState();
-  }
-
-  void getValue() async {
-    var pref = await SharedPreferences.getInstance();
-
-    var val = pref.getString(NAME_KEY);
-    if (val!.isNotEmpty) {
-      setState(() {
-        fetchedVal = val;
-      });
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text("Shared Preference"),
+        title: Text("Flutter Provider"),
       ),
-      body:  Placeholder(),
+      body: Center(
+        child: Column(
+          spacing: 10,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Consumer(
+              builder: (ctx, _, _) {
+                return Text(
+                  '${ctx.watch<CounterProvider>().getCount()}',
+                  style: TextStyle(fontSize: 25),
+                );
+              },
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute<void>(
+                    builder: (context) => ListMapScreen(),
+                  ),
+                );
+              },
+              child: Text("MapScreen"),
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          context.read<CounterProvider>().increaseCount();
+        },
+        child: Icon(Icons.add),
+      ),
     );
   }
 }
+
+// class _MyHomePageState extends State<MyHomePage> {
+//   int _counter = 0;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return ;
+//   }
+// }
