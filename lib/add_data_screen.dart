@@ -5,8 +5,13 @@ import 'package:provider/provider.dart';
 class AddDataScreen extends StatelessWidget {
   const AddDataScreen({super.key});
 
+  
+
   @override
   Widget build(BuildContext context) {
+    var nameContoller = TextEditingController();
+    var numberContoller = TextEditingController();
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Add Data"),
@@ -15,15 +20,37 @@ class AddDataScreen extends StatelessWidget {
       body: Consumer(
         builder: (ctx, provider, _) {
           return Center(
-            child: ElevatedButton(
-              onPressed: () {
-                context.read<ListMapProvider>().addData({
-                  "name": "Ashmit",
-                  "contact": 9861234342,
-                  "is_read": true,
-                });
-              },
-              child: Text("Add"),
+            child: Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Column(
+                spacing: 10,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextField(
+                    controller: nameContoller,
+                    decoration: InputDecoration(label: Text("Enter Name")),
+                  ),
+                  TextField(
+                    controller: numberContoller,
+                    decoration: InputDecoration(label: Text("Enter Number")),
+                  ),
+                  ElevatedButton(
+                    onPressed: () async {
+                      if (nameContoller.text.isNotEmpty &&
+                          numberContoller.text.isNotEmpty) {
+                        context.read<ListMapProvider>().addData({
+                          "name": nameContoller.text.toString(),
+                          "contact": numberContoller.text,
+                          "is_read": true,
+                        });
+
+                        Navigator.pop(context);
+                      }
+                    },
+                    child: Text("Add"),
+                  ),
+                ],
+              ),
             ),
           );
         },
